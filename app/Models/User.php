@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -33,6 +34,14 @@ class User extends Authenticatable
 
     public function car() {
         return $this->hasMany(Car::class);
+    }
+
+    public function register($data) {
+        $instance = $this->newInstance($data);
+        $instance->email_verify_token = Str::random(60);
+        $instance->save();
+
+        return $instance;
     }
 
     public function trips() {
