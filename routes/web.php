@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
+    return view('emails.verify-email', ['user' => ['name' => 'Miranha'], 'link' => '']);
+});
 
 Route::group(['prefix' => 'api'], function() {   
     Route::get('/token', function(){

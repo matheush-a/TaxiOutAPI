@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Lib\Validator;
+use App\Mail\EmailVerify;
+use Exception;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {   
@@ -17,15 +20,24 @@ class UserController extends Controller
     }
 
     public function store(Request $request) {
-     
         $this->validator->validate($request, [
-            'name' => ['required', 'min:3'],
             'email' => ['required', 'email', 'unique:users'],
+            'emailRedirect' => ['required'],
+            'name' => ['required', 'min:3'],
             'password' => ['required', 'min:8'],
-            'type' => ['required']
+            'type' => ['required'],
         ]);
     
-        return $this->user->register($request->all());    
+        $user = $this->user->register($request->all());
+
+        $link = $request->emailRedirect
+            .'?userMail='.$user->email
+            .'&userHash='.$user->email_verify_token;
+
+        Mail::to($user->email)
+            ->send(new EmailVerify($user, $link));
+        
+        return $user;
     }
 
     public function update() {
