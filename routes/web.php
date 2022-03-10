@@ -24,6 +24,7 @@ Route::group(['prefix' => 'api'], function() {
     
     Route::group(['prefix' => 'users'], function() {
         Route::post('/', [UserController::class, 'store']);
+        Route::put('/verify', [UserController::class, 'verifyEmail']);
     });
 });
 

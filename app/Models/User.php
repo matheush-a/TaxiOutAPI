@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +33,12 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class);
     }
 
+    public function byEmail($email) {
+        return $this->newInstance()
+            ->whereEmail($email)
+            ->first();
+    }
+
     public function car() {
         return $this->hasMany(Car::class);
     }
@@ -42,6 +49,13 @@ class User extends Authenticatable
         $instance->save();
 
         return $instance;
+    }
+
+    public function setEmailVerified($user) {
+        $user->email_verified_at = Carbon::now();
+        $user->save();
+
+        return $user;
     }
 
     public function trips() {

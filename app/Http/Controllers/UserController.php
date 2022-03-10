@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Lib\Validator;
 use App\Mail\EmailVerify;
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -41,6 +42,21 @@ class UserController extends Controller
     }
 
     public function update() {
+        
+    }
 
+    public function verifyEmail(Request $request) {
+        $this->validator->validate($request, [
+            'email' => ['required', 'email'],
+            'userHash' => ['required']
+        ]);
+
+        $user = $this->user->byEmail($request->email);
+
+        if($user && $user->email_verify_token === $request->userHash) {
+            return $this->user->setEmailVerified($user);
+        } 
+        
+        return response()->json(null, Response::HTTP_NOT_FOUND);
     }
 }
