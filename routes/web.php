@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::group(['prefix' => 'users'], function() {
         Route::post('/', [UserController::class, 'store']);
         Route::put('/verify', [UserController::class, 'verifyEmail']);
+        Route::post('/login', [AuthController::class, 'login']);
+        //Route::post('/logout', [AuthController::class, 'logout']);
     });
 });
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -28,6 +29,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password'
     ];
+
+    public function attempt($credentials) {
+        $user = $this->newQuery()
+            ->whereEmail($credentials['email'])
+            ->first();
+        
+        if(!$user) {
+            return null;
+        }
+
+        $isValid = Hash::check($credentials['password'], $user->getAuthPassword());
+    
+        return $isValid
+            ? $user
+            : null;
+    }
 
     public function bookings() {
         return $this->hasMany(Booking::class);
@@ -56,6 +73,10 @@ class User extends Authenticatable
         $user->save();
 
         return $user;
+    }
+
+    public function setPasswordAttribute($password) {
+        $this->attributes['password'] = Hash::make($password);
     }
 
     public function trips() {
