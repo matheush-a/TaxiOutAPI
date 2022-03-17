@@ -27,10 +27,10 @@ Route::group(['prefix' => 'api'], function() {
         Route::post('/', [UserController::class, 'store']);
         Route::put('/verify', [UserController::class, 'verifyEmail']);
         Route::post('/login', [AuthController::class, 'login']);
-        Route::put('/{userId}', [UserController::class, 'update']);
         
         Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::delete('/logout', [AuthController::class, 'logout']);
+            Route::put('/', [UserController::class, 'update']);
         });
     });
 });

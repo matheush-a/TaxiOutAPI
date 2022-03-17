@@ -42,7 +42,7 @@ class UserController extends Controller
     }
 
     public function update(Request $request) {
-        $user = $this->user->find($request->userId);
+        $user = $this->user->find($request->user()->id);
 
         if(!$user){
             return response()->json("User not found", Response::HTTP_NOT_FOUND);
