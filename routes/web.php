@@ -30,6 +30,7 @@ Route::group(['prefix' => 'api'], function() {
         
         Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::delete('/logout', [AuthController::class, 'logout']);
+            Route::put('/', [UserController::class, 'update']);
         });
     });
 });

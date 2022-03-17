@@ -41,8 +41,14 @@ class UserController extends Controller
         return $user;
     }
 
-    public function update() {
-        
+    public function update(Request $request) {
+        $user = $this->user->find($request->user()->id);
+
+        if(!$user){
+            return response()->json("User not found", Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->user->updateUser($user->id, $request->all());
     }
 
     public function verifyEmail(Request $request) {
