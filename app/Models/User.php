@@ -82,4 +82,13 @@ class User extends Authenticatable
     public function trips() {
         return $this->hasMany(Trip::class);
     }
+
+    public function updateUser($id, $data) {
+        $user = $this->find($id);
+        $data = collect($data)->forget('email', 'type', 'id');
+        $user->fill($data->all());
+        $user->save();
+        
+        return $user;
+    }
 }
