@@ -23,11 +23,15 @@ class User extends Authenticatable
         'email',
         'name',
         'password',
-        'type',
+        'type_id',
     ];
 
     protected $hidden = [
         'password'
+    ];
+
+    protected $appends = [
+        'user_type'
     ];
 
     public function attempt($credentials) {
@@ -60,6 +64,10 @@ class User extends Authenticatable
         return $this->hasMany(Car::class);
     }
 
+    public function getUserTypeAttribute() {
+        return $this->userType()->first();
+    }
+
     public function register($data) {
         $instance = $this->newInstance($data);
         $instance->email_verify_token = Str::random(60);
@@ -85,10 +93,14 @@ class User extends Authenticatable
 
     public function updateUser($id, $data) {
         $user = $this->find($id);
-        $data = collect($data)->forget('email', 'type', 'id');
+        $data = collect($data)->forget('email', 'type_id', 'id');
         $user->fill($data->all());
         $user->save();
         
         return $user;
+    }
+
+    public function userType() {
+        return $this->belongsTo(UserType::class, 'type_id');
     }
 }

@@ -18,6 +18,14 @@ class Car extends Model
         'year',
     ];
 
+    public function store($data) {
+        $instance = $this->newInstance($data);
+        $instance->user()->associate(auth()->user());
+        $instance->save();
+        
+        return $instance;
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

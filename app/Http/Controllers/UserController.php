@@ -26,7 +26,7 @@ class UserController extends Controller
             'emailRedirect' => ['required'],
             'name' => ['required', 'min:3'],
             'password' => ['required', 'min:8'],
-            'type' => ['required'],
+            'type_id' => ['required'],
         ]);
     
         $user = $this->user->register($request->all());
