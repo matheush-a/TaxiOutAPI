@@ -19,15 +19,14 @@ class CarController extends Controller
 
     public function delete(Request $request) {
         $car = $this->car->find($request->id);
-
-        if(!$car) {
-            return response()->json("Car not found", Response::HTTP_NOT_FOUND);
-        }
-
-        $this->authorize('delete', $car);
+        $this->authorize('interact', $car);
         $car->delete();
 
         return response()->json("Car sucessfully deleted", Response::HTTP_NO_CONTENT);
+    }
+
+    public function index() {
+        return $this->car->all();
     }
 
     public function store(Request $request) {
@@ -43,5 +42,12 @@ class CarController extends Controller
         ]);
 
         return $this->car->store($request->all());
+    }
+
+    public function show($id) {
+        $car = $this->car->find($id);
+        $this->authorize('interact', $car);
+
+        return $car;
     }
 }

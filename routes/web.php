@@ -27,6 +27,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::group(['prefix' => 'cars', 'middleware' => 'auth:sanctum'], function() {
         Route::post('/', [CarController::class, 'store']);
         Route::delete('/{id}', [CarController::class, 'delete']);
+        Route::get('/', [CarController::class, 'index']);
+        Route::get('/{id}', [CarController::class, 'show']);
     });
 
     Route::group(['prefix' => 'users'], function() {
