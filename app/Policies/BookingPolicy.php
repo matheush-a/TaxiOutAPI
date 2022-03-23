@@ -2,15 +2,14 @@
 
 namespace App\Policies;
 
-use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TripPolicy
+class BookingPolicy
 {
     use HandlesAuthorization;
 
     public function create(User $user) {
-        return !$user->is_passenger;
+        return $user->is_passenger;
     }
 }

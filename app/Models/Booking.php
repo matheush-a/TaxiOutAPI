@@ -16,6 +16,10 @@ class Booking extends Model
         'user_id'
     ];
 
+    public function byTripId($id) {
+        return $this->where('trip_id', $id);
+    }
+
     public function register($data) {
         $instance = $this->newInstance();
         $instance->user()->associate(auth()->user());

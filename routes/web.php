@@ -48,6 +48,9 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::group(['prefix' => 'bookings'], function() {
             Route::post('/', [BookingController::class, 'store']);
+            Route::delete('/{id}', [BookingController::class, 'delete']);
+            Route::get('/{id}', [BookingController::class, 'show']);
+            Route::get('/', [BookingController::class, 'index']);
         });
     });
 

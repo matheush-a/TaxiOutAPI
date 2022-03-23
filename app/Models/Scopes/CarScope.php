@@ -17,7 +17,9 @@ class CarScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('user_id', auth()->user()->id);
+        if(!auth()->user()->is_passenger) {
+            $builder->where('user_id', auth()->user()->id);
+        }
     }
 
 }
