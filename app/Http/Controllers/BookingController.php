@@ -45,6 +45,7 @@ class BookingController extends Controller
             return response()->json("Booking not found", Response::HTTP_NOT_FOUND);
         }
 
+        $this->authorize('interact', $booking);
         $booking->delete();
 
         return response()->json("Booking sucessfully deleted", Response::HTTP_NO_CONTENT);
