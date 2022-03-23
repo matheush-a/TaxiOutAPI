@@ -11,6 +11,6 @@ class TripPolicy
     use HandlesAuthorization;
 
     public function create(User $user) {
-        return $user->user_type->type === 'Taxista';
+        return !$user->is_passenger;
     }
 }

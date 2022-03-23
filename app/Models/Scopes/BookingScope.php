@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class CarScope implements Scope
+class BookingScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -17,9 +17,14 @@ class CarScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        if(!auth()->user()->is_passenger) {
-            $builder->where('user_id', auth()->user()->id);
+        $auth = auth()->user();
+
+        if($auth->is_passenger) {
+            return $builder->where('user_id', $auth->id);
         }
+
+        return $builder->join('trip', 'trip.id', 'booking.trip_id')
+            ->where('trip.driver_id', $auth->id);
     }
 
 }

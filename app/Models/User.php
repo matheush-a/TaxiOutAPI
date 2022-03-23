@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -31,7 +32,8 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'user_type'
+        'user_type',
+        'is_passenger'
     ];
 
     public function attempt($credentials) {
@@ -60,12 +62,16 @@ class User extends Authenticatable
             ->first();
     }
 
-    public function car() {
+    public function cars() {
         return $this->hasMany(Car::class);
     }
 
     public function getUserTypeAttribute() {
         return $this->userType()->first();
+    }
+
+    public function getIsPassengerAttribute() {
+        return $this->type_id === 1;
     }
 
     public function register($data) {

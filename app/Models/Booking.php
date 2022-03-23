@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\BookingScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,14 @@ class Booking extends Model
         'trip_id',
         'user_id'
     ];
+
+    protected static function booted() {
+        static::addGlobalScope(new BookingScope);
+    }
+
+    public function byTripId($id) {
+        return $this->where('trip_id', $id);
+    }
 
     public function register($data) {
         $instance = $this->newInstance();
